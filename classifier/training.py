@@ -26,6 +26,7 @@ class Training:
         optimizer = optim.Adam(self.model.network.classifier.parameters(), lr = self.learning_rate)
         print_every = 40
         steps = 0
+
         for e in range(self.epochs):
             print('Epoch {}/{}'.format(e+1, self.epochs)) if self.debug else None
             running_loss = 0

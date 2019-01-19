@@ -1,8 +1,10 @@
+import time, torch
+
 class Checkpoint:
     def __init__(self, data):
         self.data = data
 
-    def save(self, dir = '.'):
+    def save(self, save_dir):
         torch.save(
-            self.data, dir + '/{}_checkpoint.pth'.format(int(time.time()))
+            self.data, '{}/{}_checkpoint.pth'.format(save_dir, int(time.time()))
         )
