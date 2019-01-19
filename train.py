@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import argparse, sys
 from classifier import Training, Checkpoint
 
@@ -12,15 +11,8 @@ parser.add_argument('--hidden_units', help='number of units in the hidden layer,
 parser.add_argument('--learning_rate', help='hyperparamater to adjust during training, defaults to 0.001', type=float, default=0.001)
 parser.add_argument('--epochs', help='number of epochs to run, defaults to 2', type=int, default=2)
 parser.add_argument('--gpu', help='use GPU mode', action='store_true')
-
 arguments = parser.parse_args()
-print(arguments)
 
 training = Training(arguments)
-print('TR', type(training))
-
-training.start()
-
-cp = Checkpoint()
-print('CP', type(cp))
-cp.save(arguments.save_dir)
+checkpoint = training.start()
+checkpoint.save(arguments.save_dir)
