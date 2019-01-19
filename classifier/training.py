@@ -1,9 +1,9 @@
 from checkpoint import Checkpoint
 
 class Training:
-    def __init__(self, args):
+    def __init__(self, args=None):
         print(args)
 
-    def run():
-        print('training…')
+    def start(self):
+        print('running…')
         return Checkpoint()

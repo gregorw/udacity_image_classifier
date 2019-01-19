@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
 import argparse, sys
-from training import Training
-from checkpoint import Checkpoint
+from classifier import Training, Checkpoint
 
 # python train.py data_dir --learning_rate 0.01 --hidden_units 512 --epochs 20
 parser = argparse.ArgumentParser(description = 'Train a new classifier')
