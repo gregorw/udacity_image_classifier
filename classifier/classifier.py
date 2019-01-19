@@ -1,6 +1,11 @@
-class Classifier:
-    def __init__(self, checkpoint)
-        self.model = checkpoint.model
+from torch import nn
 
-    def predict(self, image_path)
-        None
+class Classifier:
+    def __init__(self, input_size, hidden_units, dropout, output_size):
+        self.network = nn.Sequential(
+            nn.Linear(input_size, hidden_units),
+            nn.ReLU(),
+            nn.Dropout(p=dropout),
+            nn.Linear(hidden_units, output_size),
+            nn.LogSoftmax(dim=1)
+        )
