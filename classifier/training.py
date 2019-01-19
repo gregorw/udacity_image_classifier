@@ -1,3 +1,4 @@
+import torch
 from torch import nn, optim
 from .checkpoint import Checkpoint
 from .data import Data
@@ -6,25 +7,27 @@ from .classifier import Classifier
 
 class Training:
     def __init__(self, args=None):
+        self.debug = False
+        print(args)
         self.data_dir = args.data_dir
         self.arch = args.arch
         self.hidden_units = args.hidden_units
         self.learning_rate = args.learning_rate
         self.epochs = args.epochs
-        self.gpu = args.gpu
         self.device = 'cuda' if args.gpu else 'cpu'
         self.dropout = args.dropout
         self.data = Data(self.data_dir + '/train')
-        self.validation_data = Data(self.data_dir + '/valid')
+        self.validation_data = Data(self.data_dir + '/valid', debug=self.debug)
 
     def start(self):
-        print('Training started…')
+        print('Training started…') if self.debug else None
         self.prepare_model()
         criterion = nn.NLLLoss()
         optimizer = optim.Adam(self.model.network.classifier.parameters(), lr = self.learning_rate)
         print_every = 40
         steps = 0
         for e in range(self.epochs):
+            print('Epoch {}/{}'.format(e+1, self.epochs)) if self.debug else None
             running_loss = 0
             for inputs, labels in self.data.loader:
                 self.model.network.train()
@@ -38,8 +41,8 @@ class Training:
                 optimizer.step()
                 running_loss += loss.item()
                 if steps % print_every == 0:
-                    validation_loss, accuracy = validation(self.model.network, self.validation_data.loader, criterion)
-                    print("Epoch: {}/{}... ".format(e+1, epochs),
+                    validation_loss, accuracy = self.validation(self.model.network, self.validation_data.loader, criterion, self.debug)
+                    print("Epoch: {}/{}... ".format(e+1, self.epochs),
                           "Training Loss: {:.4f} ".format(running_loss/print_every),
                           "Validation Loss: {:.3f} ".format(validation_loss),
                           "Validation Accuracy: {:.3f}".format(accuracy))
@@ -60,7 +63,8 @@ class Training:
         return Checkpoint(data)
 
 
-    def validation(model, dataloader, criterion, log = False):
+    def validation(self, model, dataloader, criterion, log = False):
+        print('validation…') if log else None
         loss = 0
         accuracy = 0
         batch_count = len(dataloader)
@@ -68,7 +72,7 @@ class Training:
         model.eval()
         with torch.no_grad():
             for i, (images, labels) in enumerate(dataloader, start = 1):
-                images, labels = images.to(device), labels.to(device)
+                images, labels = images.to(self.device), labels.to(self.device)
                 output = model.forward(images)
                 loss += criterion(output, labels).item()
                 ps = torch.exp(output)
