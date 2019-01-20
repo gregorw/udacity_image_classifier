@@ -9,3 +9,6 @@ class Classifier:
             nn.Linear(hidden_units, output_size),
             nn.LogSoftmax(dim=1)
         )
+
+    def load_state(self, dict):
+        self.network.load_state_dict(dict)

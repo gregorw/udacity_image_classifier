@@ -5,6 +5,7 @@ class Data():
     def __init__(self, path, batch_size=20, debug=False):
         means = [0.485, 0.456, 0.406]
         stds = [0.229, 0.224, 0.225]
+
         standard_transforms = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224),

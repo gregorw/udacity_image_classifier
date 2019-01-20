@@ -49,19 +49,19 @@ class Training:
                           "Validation Accuracy: {:.3f}".format(accuracy))
                     running_loss = 0
 
-        data = {
-                'learning_rate': self.learning_rate,
-                'epochs': self.epochs,
-                'arch': self.arch,
-                'input_size': self.model.input_size,
-                'hidden_units': self.hidden_units,
-                'output_size': self.data.size,
-                'dropout': self.dropout,
-                'device': self.device,
-                'class_to_idx': self.data.set.class_to_idx,
-                'classifier': self.model.network.classifier.state_dict()
-        }
-        return Checkpoint(data)
+        checkpoint = Checkpoint(
+            learning_rate = self.learning_rate,
+            epochs = self.epochs,
+            arch = self.arch,
+            input_size = self.model.input_size,
+            hidden_units = self.hidden_units,
+            output_size = self.data.size,
+            dropout = self.dropout,
+            device = self.device,
+            class_to_idx = self.data.set.class_to_idx,
+            classifier = self.model.network.classifier.state_dict()
+        )
+        return checkpoint
 
 
     def validation(self, model, dataloader, criterion, log = False):
