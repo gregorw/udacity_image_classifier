@@ -13,7 +13,10 @@ Get help with the following commands:
 **Training**
 
 > python train.py flowers --gpu --epochs 1 --arch vgg13 --hidden_units 124
-Checkpoint written to 1547998999_checkpoint.pth
+Checkpoint written to ./1547998999_checkpoint.pth
+
+> python train.py flowers --gpu --epochs 1 --arch vgg11 --hidden_units 124 --dropout 0.5
+Checkpoint written to ./1548006356_checkpoint.pth
 
 **Prediction**
 
@@ -40,3 +43,9 @@ Predicted ‘canna lily’ with confidence 0.935
 
 > python predict.py flowers/test/90/image_04405.jpg test/1547991223_checkpoint.pth --gpu
 Predicted ‘90’ with confidence 0.935
+
+> python predict.py flowers/test/23/image_03440.jpg 1548006356_checkpoint.pth 
+Predicted ‘23’ with confidence 0.988
+
+> python predict.py flowers/test/23/image_03440.jpg 1548006356_checkpoint.pth --gpu
+Predicted ‘23’ with confidence 0.988

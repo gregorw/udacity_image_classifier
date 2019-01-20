@@ -8,7 +8,6 @@ from .classifier import Classifier
 class Training:
     def __init__(self, args=None):
         self.debug = False
-        print(args)
         self.data_dir = args.data_dir
         self.arch = args.arch
         self.hidden_units = args.hidden_units
