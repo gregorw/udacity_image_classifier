@@ -16,16 +16,19 @@ class Predictor:
         processed = Processor(image).result
 
         if self.gpu:
-            processed.to('cuda')
+            processed = processed.to('cuda')
         
-        self.checkpoint.model.network.eval()
+        model = self.checkpoint.model.network
+        model.eval()
         with torch.no_grad():
+            # print('model: {}'.format(next(model.parameters()).device))
+            # print('image: {}'.format(processed.device))
             output = self.checkpoint.model.network.forward(processed)
 
         probs = torch.exp(output)
         probs, indices = torch.topk(probs, 5)
-        probs = probs.detach().numpy().tolist()[0]
-        indices = indices.detach().numpy().tolist()[0]
+        probs = probs.detach().cpu().numpy().tolist()[0]
+        indices = indices.detach().cpu().numpy().tolist()[0]
 
         #mapping indices to classes
         idx_to_class = { v: k for k, v in self.checkpoint.class_to_idx.items() }

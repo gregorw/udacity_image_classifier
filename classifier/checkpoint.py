@@ -39,15 +39,17 @@ class Checkpoint:
         self.data['device'] = self.device
         self.data['class_to_idx'] = self.class_to_idx
         self.data['classifier'] = self.classifier
-        torch.save(
-            self.data, '{}/{}_checkpoint.pth'.format(save_dir, int(time.time()))
-        )
+        
+        filename = '{}/{}_checkpoint.pth'.format(save_dir, int(time.time()))
+        torch.save(self.data, filename)
+        print('Checkpoint written to {}'.format(filename))
+
     
     def set_model(self, model, gpu = False):
         self.model = model
-                
+
         if gpu:
-            self.model.network.to('cuda')
+            self.model.network = self.model.network.to('cuda')
 
 
     # Class method
