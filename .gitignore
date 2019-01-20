@@ -101,4 +101,4 @@ ENV/
 .mypy_cache/
 
 # Checkpoints
-**/*checkpoint.pth
+/*checkpoint.pth
